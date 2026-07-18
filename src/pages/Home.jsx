@@ -4,6 +4,7 @@ import { fetchFeatured, fetchWeather } from '../services/botitasApi'
 import { useCategories } from '../hooks/useCategories'
 import logo from '../assets/logo.jpg'
 import negocio from '../assets/negocio.jpg'
+import ProductFallbackIcon from '../components/ProductFallbackIcon'
 
 function CategoryFallbackIcon() {
   return (
@@ -115,7 +116,13 @@ function Home() {
                     {/* ── CARA FRONTAL ── */}
                     <div className="product-card-front">
                       <div className="product-img-wrap">
-                        <img src={p.image} alt={p.name} loading="lazy" />
+                        {p.image ? (
+                          <img src={p.image} alt={p.name} loading="lazy" />
+                        ) : (
+                          <div className="product-img-fallback">
+                            <ProductFallbackIcon size={40} />
+                          </div>
+                        )}
                         <span className="product-badge">Destacado</span>
                       </div>
                       <div className="product-body">

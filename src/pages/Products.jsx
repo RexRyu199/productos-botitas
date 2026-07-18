@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams }                   from 'react-router-dom'
 import { fetchProducts }                     from '../services/botitasApi'
 import { useCategories }                     from '../hooks/useCategories'
+import ProductFallbackIcon from '../components/ProductFallbackIcon'
 
 const SORT_OPTIONS = [
   { value: 'default',    label: 'Predeterminado' },
@@ -192,7 +193,13 @@ function Products() {
                       <div className="product-card-inner">
                         <div className="product-card-front">
                           <div className="product-img-wrap">
-                            <img src={p.image} alt={p.name} loading="lazy" />
+                            {p.image ? (
+                              <img src={p.image} alt={p.name} loading="lazy" />
+                            ) : (
+                              <div className="product-img-fallback">
+                                <ProductFallbackIcon size={40} />
+                              </div>
+                            )}
                           </div>
                           <div className="product-body">
                             <span className="product-category">

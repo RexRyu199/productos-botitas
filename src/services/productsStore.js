@@ -26,8 +26,7 @@ export async function addProduct(product) {
       name:        product.name.trim(),
       description: product.desc?.trim() || '',
       price,
-      image: product.image?.trim() ||
-        'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80',
+      image: product.image?.trim() || null,
       featured: !!product.featured,
       in_stock: product.inStock !== false,
     }])
@@ -57,7 +56,7 @@ export async function updateProduct(id, updates) {
       name:        updates.name.trim(),
       description: updates.desc?.trim() || '',
       price,
-      image:       updates.image?.trim() || '',
+      image:       updates.image?.trim() || null,
       featured:    !!updates.featured,
       in_stock:    !!updates.inStock,
     })

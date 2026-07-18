@@ -894,3 +894,11 @@
   color: var(--verde-dark); font-size: 13px; font-weight: 600;
   padding: 7px 18px; border-radius: 99px;
 }
+
+/* ── Producto sin imagen: fallback estilizado ────────── */
+.product-img-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--verde-dim), var(--dorado-dim));
+  color: var(--verde);
+}
