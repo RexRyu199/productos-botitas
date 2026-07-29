@@ -2,13 +2,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams }                   from 'react-router-dom'
 import { fetchProducts }                     from '../services/botitasApi'
 import { useCategories }                     from '../hooks/useCategories'
-import ProductFallbackIcon from '../components/ProductFallbackIcon'
+import ProductFallbackIcon                   from '../components/ProductFallbackIcon'
 
 const SORT_OPTIONS = [
-  { value: 'default',    label: 'Predeterminado' },
-  { value: 'price-asc',  label: 'Precio: menor a mayor' },
-  { value: 'price-desc', label: 'Precio: mayor a menor' },
-  { value: 'name',       label: 'Nombre A–Z' },
+  { value: 'default',  label: 'Predeterminado' },
+  { value: 'name',     label: 'Nombre A–Z' },
 ]
 
 function ProductSkeleton() {
@@ -36,8 +34,6 @@ function Products() {
   const [error, setError]         = useState(null)
   const [search, setSearch]       = useState('')
   const [sort, setSort]           = useState('default')
-  const [minPrice, setMinPrice]   = useState('')
-  const [maxPrice, setMaxPrice]   = useState('')
 
   const loadProducts = useCallback(async () => {
     setLoading(true)
@@ -70,26 +66,17 @@ function Products() {
     )
   }
 
-  const min = parseFloat(minPrice)
-  const max = parseFloat(maxPrice)
-  if (!isNaN(min)) displayed = displayed.filter(p => p.price >= min)
-  if (!isNaN(max)) displayed = displayed.filter(p => p.price <= max)
-
-  if (sort === 'price-asc')  displayed.sort((a, b) => a.price - b.price)
-  if (sort === 'price-desc') displayed.sort((a, b) => b.price - a.price)
-  if (sort === 'name')       displayed.sort((a, b) => a.name.localeCompare(b.name))
+  if (sort === 'name') displayed.sort((a, b) => a.name.localeCompare(b.name))
 
   const setCategory = (key) => {
     if (key === 'todos') setSearchParams({})
     else setSearchParams({ categoria: key })
   }
 
-  const hasActiveFilters = search || minPrice || maxPrice || categoryParam !== 'todos'
+  const hasActiveFilters = search || categoryParam !== 'todos'
 
   const clearAll = () => {
     setSearch('')
-    setMinPrice('')
-    setMaxPrice('')
     setSearchParams({})
   }
 
@@ -98,7 +85,7 @@ function Products() {
       <div className="page-header">
         <p className="section-label">Catálogo</p>
         <h1>Nuestros <span className="accent">Productos</span></h1>
-        <p className="subtitle">Encuentra lo que necesitas al mejor precio</p>
+        <p className="subtitle">Encuentra lo que necesitas — pregúntanos por precios y disponibilidad</p>
       </div>
 
       <div className="products-layout">
@@ -117,24 +104,6 @@ function Products() {
                 <span className="filter-cat-count">{countFor(cat.key)}</span>
               </button>
             ))}
-          </div>
-
-          <h3 className="filters-title" style={{ marginTop: 24 }}>Precio</h3>
-          <div className="price-range-inputs">
-            <div className="form-group">
-              <label>Mínimo</label>
-              <input
-                type="number" min="0" placeholder="$0"
-                value={minPrice} onChange={e => setMinPrice(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Máximo</label>
-              <input
-                type="number" min="0" placeholder="$999"
-                value={maxPrice} onChange={e => setMaxPrice(e.target.value)}
-              />
-            </div>
           </div>
 
           {hasActiveFilters && (
@@ -208,7 +177,7 @@ function Products() {
                             <h3>{p.name}</h3>
                             <p>{p.desc}</p>
                             <div className="product-footer">
-                              <span className="product-price">${p.price.toLocaleString('es-MX')} MXN</span>
+                              <span className="product-price-cta">Consultar precio</span>
                             </div>
                           </div>
                         </div>
@@ -232,14 +201,13 @@ function Products() {
                               </div>
                             </div>
                             <div className="back-actions">
-                              {/* Acción WhatsApp */}
-                              <a 
+                              <a
                                 href={`https://wa.me/526531037291?text=Hola!%20Me%20interesa%20obtener%20más%20información%20sobre%20el%20producto:%20${encodeURIComponent(p.name)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn-back-action"
+                                className="btn-back-action whatsapp-btn"
                               >
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '6px', verticalAlign: 'middle' }}>
                                   <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 11.948 0c3.174.001 6.161 1.24 8.403 3.484 2.243 2.244 3.48 5.232 3.479 8.407-.003 6.597-5.34 11.946-11.892 11.946-.207 0-.415-.01-.617-.023L0 24zm6.59-4.846c1.6 1.002 3.321 1.582 5.3 1.585 5.215 0 9.459-4.283 9.462-9.551a9.39 9.39 0 0 0-2.76-6.726 9.46 9.46 0 0 0-6.702-2.755c-5.215 0-9.459 4.283-9.462 9.55-.001 2.105.56 4.153 1.623 5.92l-.994 3.633 3.733-.981z"/>
                                 </svg>
                                 Preguntar por WhatsApp

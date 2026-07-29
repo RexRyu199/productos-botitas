@@ -902,3 +902,23 @@
   background: linear-gradient(135deg, var(--verde-dim), var(--dorado-dim));
   color: var(--verde);
 }
+
+/* ── Reemplaza el precio visible por un CTA de consulta ── */
+.product-price-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--verde);
+}
+.product-price-cta::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--verde);
+  flex-shrink: 0;
+}

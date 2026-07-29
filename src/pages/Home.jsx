@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { fetchFeatured, fetchWeather } from '../services/botitasApi'
 import { useCategories } from '../hooks/useCategories'
+import ProductFallbackIcon from '../components/ProductFallbackIcon'
 import logo from '../assets/logo.jpg'
 import negocio from '../assets/negocio.jpg'
-import ProductFallbackIcon from '../components/ProductFallbackIcon'
 
 function CategoryFallbackIcon() {
   return (
@@ -132,7 +132,7 @@ function Home() {
                         <h3>{p.name}</h3>
                         <p>{p.desc}</p>
                         <div className="product-footer">
-                          <span className="product-price">${p.price.toLocaleString('es-MX')} MXN</span>
+                          <span className="product-price-cta">Consultar precio</span>
                         </div>
                       </div>
                     </div>
